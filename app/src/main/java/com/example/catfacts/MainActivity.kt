@@ -1,47 +1,84 @@
 package com.example.catfacts
 
+// Required imports
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.catfacts.ui.theme.CatFactsTheme
+import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.example.catfacts.databinding.ActivityMainBinding
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
+
+    // ViewBinding gives us direct access to views in activity_main.xml
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            CatFactsTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+
+        // Replaces findViewById for xml obj
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // Set a click event listener on the button to call the api getter on click
+        binding.showFactButton.setOnClickListener {
+            fetchCatFact()
+        }
+    }
+
+    // Function to fetch a random cat fact from the API
+    private fun fetchCatFact() {
+        // Show the loader and disable the button
+        showLoading(true)
+
+        //Handle the HTTP request
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://catfact.ninja/") // Base URL of the API
+            .addConverterFactory(GsonConverterFactory.create()) // Convert JSON to Kotlin objects
+            .build()
+
+        // Create an implementation of the API interface
+        val service = retrofit.create(CatFactApi::class.java)
+
+        // Launch a coroutine in the lifecycleScope (safe way to make background calls in Android)
+        lifecycleScope.launch {
+            try {
+                // Make the network request (suspend function)
+                val response = service.getRandomCatFact()
+
+                // onSuccess
+                if (response.isSuccessful) {
+                    // Get the body of the response (CatFact object)
+                    val fact = response.body()
+
+                    // Display in the TextView (or show fallback message)
+                    binding.factTextView.text = fact?.fact ?: "No fact found."
+                } else {
+                    //  show error message onError
+                    showError("Failed to fetch cat fact.")
                 }
+
+            } catch (e: Exception) {
+                // Catch any network or parsing errors
+                showError("Network error: ${e.message}")
+            } finally {
+                // Always hide the loading spinner and re-enable button
+                showLoading(false)
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+    // Show or hide the progress bar and enable/disable the button
+    private fun showLoading(show: Boolean) {
+        binding.loadingIndicator.visibility = if (show) View.VISIBLE else View.GONE
+        binding.showFactButton.isEnabled = !show
+    }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CatFactsTheme {
-        Greeting("Android")
+    // Show a short popup message at the bottom of the screen
+    private fun showError(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
