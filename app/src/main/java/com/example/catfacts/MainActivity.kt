@@ -10,11 +10,17 @@ import com.example.catfacts.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import android.media.MediaPlayer
+
 
 class MainActivity : AppCompatActivity() {
 
     // ViewBinding gives us direct access to views in activity_main.xml
     private lateinit var binding: ActivityMainBinding
+
+    // MediaPlayer instance
+    private var meowPlayer: MediaPlayer? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,8 +29,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Load meow sound
+        meowPlayer = MediaPlayer.create(this, R.raw.cat_meow)
+
         // Set a click event listener on the button to call the api getter on click
         binding.showFactButton.setOnClickListener {
+            playMeow()
             fetchCatFact()
         }
     }
@@ -71,6 +81,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Function to play meow sound
+    private fun playMeow() {
+        meowPlayer?.let {
+            if (it.isPlaying) {
+                it.seekTo(0) // Restart if already playing
+            } else {
+                it.start()
+            }
+        }
+    }
     // Show or hide the progress bar and enable/disable the button
     private fun showLoading(show: Boolean) {
         binding.loadingIndicator.visibility = if (show) View.VISIBLE else View.GONE
@@ -80,5 +100,12 @@ class MainActivity : AppCompatActivity() {
     // Show a short popup message at the bottom of the screen
     private fun showError(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    // Clean up
+    override fun onDestroy() {
+        super.onDestroy()
+        meowPlayer?.release()
+        meowPlayer = null
     }
 }
