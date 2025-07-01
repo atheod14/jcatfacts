@@ -4,5 +4,5 @@ import retrofit2.Response
 
 interface CatFactApi {
     @GET("fact")
-    suspend fun getRandomCatFacts(): Response<CatFact>
+    suspend fun getRandomCatFact(): Response<CatFact>
 }
