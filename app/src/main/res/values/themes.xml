@@ -1,8 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.CatFacts" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">#6200EE</item>
-        <item name="colorPrimaryDark">#3700B3</item>
+        <!-- Background color of the action bar -->
+        <item name="colorPrimary">#DEC0AC</item>
+        <item name="colorPrimaryDark">#A67C52</item>
         <item name="colorAccent">#03DAC5</item>
     </style>
 </resources>
