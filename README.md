@@ -40,7 +40,7 @@
     <li><a href="#-how-to-run">🚀 How to Run</a></li>
     <li><a href="#%EF%B8%8F-on-emulator">🖥️ On Emulator</a></li>
     <li><a href="#%EF%B8%8F-roadmap">🛠️ Roadmap</a></li>
-    <li><a href="#%EF%B8%8F-screenshots">📸 Screenshots</a></li>
+    <li><a href="#-screenshots">📸 Screenshots</a></li>
     <li><a href="#%EF%B8%8F-contributing">♻️ Contributing</a></li>
     <li><a href="#-license">📆 License</a></li>
     <li><a href="#-contact">👥 Contact</a></li>
