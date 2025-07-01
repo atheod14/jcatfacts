@@ -40,6 +40,7 @@
     <li><a href="#-how-to-run">🚀 How to Run</a></li>
     <li><a href="#%EF%B8%8F-on-emulator">🖥️ On Emulator</a></li>
     <li><a href="#%EF%B8%8F-roadmap">🛠️ Roadmap</a></li>
+    <li><a href="#%EF%B8%8F-screenshots">📸 Screenshots</a></li>
     <li><a href="#%EF%B8%8F-contributing">♻️ Contributing</a></li>
     <li><a href="#-license">📆 License</a></li>
     <li><a href="#-contact">👥 Contact</a></li>
@@ -112,8 +113,21 @@ emulator-5554   device
 - [x] Fetch cat fact from API
 - [x] Add button with rounded corner styling
 - [x] Spinner tint support
+- [x] Meow sound on button press
 - [ ] Add light/dark theme switch
 - [ ] Add pull-to-refresh
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+---
+
+## 📸 Screenshots
+
+### Home Screen (Light Mode)
+![Light Mode](screenshots/InitialScreen.png)
+
+### A random cat fact (Light Mode)
+![Light Mode](screenshots/RandomCatFact.png)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
